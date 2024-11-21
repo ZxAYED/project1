@@ -1,6 +1,6 @@
 import { Schema, model, connect } from 'mongoose';
 
-export interface userName {
+export interface UserName {
     firstName: string
     middleName: string
     lastName: string
@@ -14,7 +14,7 @@ export interface Gurdian {
     motherOccupation: string
     motherContactNo: string
 }
-export type localGurdian = {
+export type LocalGurdian = {
     name: string
     occupation: string
     contactNo: string
@@ -22,11 +22,11 @@ export type localGurdian = {
 }
 export interface Student {
     id: string
-    name: userName
+    name: UserName
     email: string;
     avatar?: string;
     gender: 'male' | 'female'
-    dateOfBirth: string
+    dateOfBirth?: string
     contactNo: string
     emergencryContactNo: string
     bloodGroup?: 'A+' | 'A-' | 'B+' | 'B-' | 'AB+' | 'AB-' | 'O+' | 'O-',
@@ -35,5 +35,5 @@ export interface Student {
     gurdian: Gurdian
     profileImg?: string
     isActive: 'active' | 'inactive'
-
+    localGurdian: LocalGurdian
 }
