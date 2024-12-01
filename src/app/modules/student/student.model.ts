@@ -1,18 +1,24 @@
 import { Schema, model, connect } from 'mongoose';
-import { Gurdian, LocalGurdian, Student, UserName } from './student.interface';
+import { Gurdian, LocalGurdian, IStudent, UserName } from './student.interface';
 const userNameSchema = new Schema<UserName>({
 
     firstName: {
         type: String,
-        required: true
+        required: true,
+        maxlength: [20, 'First name character must be in 20 letters'],
+        trim: true
     },
     middleName: {
         type: String,
-        required: true
+        required: true,
+        maxlength: [20, 'Middle name character must be in 20 letters'],
+        trim: true
     },
     lastName: {
         type: String,
-        required: true
+        required: true,
+        maxlength: [20, 'Last name character must be in 20 letters'],
+        trim: true
     }
 
 })
@@ -30,21 +36,85 @@ const localGurdianSchema = new Schema<LocalGurdian>({
     address: { type: String, required: true },
     contactNo: { type: String, required: true },
 })
-const studentSchema = new Schema<Student>({
-    id: { type: String },
-    name: userNameSchema,
-    gender: ["male" | 'female'],
-    dateOfBirth: String,
-    email: { type: String, required: true },
-    contactNo: { type: String, required: true },
-    emergencryContactNo: { type: String, required: true },
-    bloodGroup: ['A+' | 'A-' | 'B+' | 'B-' | 'AB+' | 'AB-' | 'O+' | 'O-'],
-    presendAddress: { type: String, required: true },
-    permanentAddress: { type: String, required: true },
-    gurdian: gurdianSchema,
-    localGurdian: localGurdianSchema,
-    profileImg: { type: String },
-    isActive: ['active', 'blocked']
-})
+const studentSchema = new Schema<IStudent>({
+    id: { type: String, unique: true, required: true },
+    name: {
+        type: userNameSchema,
+        required: [true, 'Name is required']
+    },
+    gender: {
+        type: String,
+        enum: {
+            values: ["male", "female", "others"],
+            message: '{VALUE} is not a valid gender'
+        },
+        required: [true, 'Gender is required']
+    },
+    dateOfBirth: { type: String },
+    email: {
+        type: String,
+        required: [true, 'Email is required'],
+        validate: {
+            validator: function (v: string) {
+                return /^\S+@\S+\.\S+$/.test(v);
+            },
+            message: 'Email is not a valid format'
+        }, unique: true
 
-export const StudentModel = model<Student>('User', studentSchema)
+    },
+    contactNo: {
+        type: String,
+        required: [true, 'Contact number is required'],
+        validate: {
+            validator: function (v: string) {
+                return /^\d+$/.test(v);
+            },
+            message: 'Contact number must be numeric'
+        }
+    },
+    emergencryContactNo: {
+        type: String,
+        required: [true, 'Emergency contact number is required'],
+        validate: {
+            validator: function (v: string) {
+                return /^\d+$/.test(v);
+            },
+            message: 'Emergency contact number must be numeric'
+        }
+    },
+    bloodGroup: {
+        type: String,
+        enum: {
+            values: ['A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-'],
+            message: '{VALUE} is not a valid blood group'
+        }
+    },
+    presendAddress: {
+        type: String,
+        required: [true, 'Present address is required']
+    },
+    permanentAddress: {
+        type: String,
+        required: [true, 'Permanent address is required']
+    },
+    gurdian: {
+        type: gurdianSchema,
+        required: [true, 'Guardian information is required']
+    },
+    localGurdian: {
+        type: localGurdianSchema,
+        required: [true, 'Local guardian information is required']
+    },
+    profileImg: { type: String },
+    isActive: {
+        type: String,
+        enum: {
+            values: ['active', 'blocked'],
+            message: '{VALUE} is not a valid status'
+        },
+        required: [true, 'Status is required'],
+        default: 'active'
+    }
+});
+
+export const StudentModel = model<IStudent>('User', studentSchema)

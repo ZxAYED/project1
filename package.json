@@ -1,37 +1,33 @@
 {
   "name": "project1",
   "version": "1.0.0",
-  "main": "index.js",
+  "main": "server.js",
   "scripts": {
-    "lint:fix": "eslint src --fix",
-    "lint": "eslint src",
     "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node dist/server.js",
     "build": "tsc",
-    "start:prod": "node dist/server.js",
-    "start:dev": "ts-node-dev --respawn --transpile-only src/server.ts",
-    "prettier": "prettier --ignore-path .gitignore --write \"**/*.+(js|ts|json)\""
+    "dev": "npx nodemon --watch src --exec \"npx ts-node --transpile-only src/server.ts\"",
+    "Build": "tsc",
+    "lint:fix": "eslint src --fix",
+    "lint": "eslint .",
+    "prettier": "prettier --ignore-path .gitignore --write \"**/*.+(js|ts|json)\"",
+    "prettier:fix": "prettier --ignore-path .gitignore --write \"**/*.+(js|ts|json)\"  --fix"
   },
+  "keywords": [],
   "author": "",
   "license": "ISC",
   "description": "",
-  "devDependencies": {
-    "@types/cors": "^2.8.17",
-    "@types/express": "^5.0.0",
-    "@types/node": "^22.9.0",
-    "@typescript-eslint/eslint-plugin": "^8.14.0",
-    "@typescript-eslint/parser": "^8.14.0",
-    "eslint": "^9.15.0",
-    "eslint-config-prettier": "^9.1.0",
-    "nodemon": "^3.1.7",
-    "prettier": "^3.3.3",
-    "typescript": "^5.6.3"
-  },
   "dependencies": {
     "cors": "^2.8.5",
     "dotenv": "^16.4.5",
     "express": "^4.21.1",
-    "mongodb": "^6.10.0",
-    "mongoose": "^8.8.1",
-    "ts-node-dev": "^2.0.0"
+    "mongodb": "^6.11.0",
+    "mongoose": "^8.8.3",
+    "zod": "^3.23.8"
+  },
+  "devDependencies": {
+    "@types/express": "^5.0.0",
+    "nodemon": "^3.1.7",
+    "ts-node": "^10.9.2"
   }
 }

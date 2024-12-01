@@ -2,7 +2,7 @@ import { Schema, model, connect } from 'mongoose';
 
 export interface UserName {
     firstName: string
-    middleName: string
+    middleName?: string
     lastName: string
 }
 
@@ -20,12 +20,12 @@ export type LocalGurdian = {
     contactNo: string
     address: string
 }
-export interface Student {
+export interface IStudent {
     id: string
     name: UserName
     email: string;
     avatar?: string;
-    gender: 'male' | 'female'
+    gender: 'male' | 'female' | 'others'
     dateOfBirth?: string
     contactNo: string
     emergencryContactNo: string
@@ -34,6 +34,9 @@ export interface Student {
     permanentAddress: string
     gurdian: Gurdian
     profileImg?: string
-    isActive: 'active' | 'inactive'
+    isActive: 'active' | 'blocked'
     localGurdian: LocalGurdian
+}
+type studentMethod = {
+    isUserExists(id: string): Promise<IStudent>
 }
