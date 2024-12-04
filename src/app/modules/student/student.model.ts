@@ -1,7 +1,9 @@
-import { Schema, model, connect } from 'mongoose';
+import { Schema, model } from 'mongoose';
 import { Gurdian, LocalGurdian, IStudent, UserName } from './student.interface';
-const userNameSchema = new Schema<UserName>({
 
+import config from '../../config';
+
+const userNameSchema = new Schema<UserName>({
     firstName: {
         type: String,
         required: true,
@@ -20,8 +22,8 @@ const userNameSchema = new Schema<UserName>({
         maxlength: [20, 'Last name character must be in 20 letters'],
         trim: true
     }
+});
 
-})
 const gurdianSchema = new Schema<Gurdian>({
     fatherContactNo: { type: String, required: true },
     fatherName: { type: String, required: true },
@@ -29,18 +31,26 @@ const gurdianSchema = new Schema<Gurdian>({
     motherContactNo: { type: String, required: true },
     motherName: { type: String, required: true },
     motherOccupation: { type: String, required: true },
-},)
+});
+
 const localGurdianSchema = new Schema<LocalGurdian>({
     name: { type: String, required: true },
     occupation: { type: String, required: true },
     address: { type: String, required: true },
     contactNo: { type: String, required: true },
-})
+});
+
 const studentSchema = new Schema<IStudent>({
     id: { type: String, unique: true, required: true },
     name: {
         type: userNameSchema,
         required: [true, 'Name is required']
+    },
+    user: {
+        type: Schema.Types.ObjectId,
+        required: [true, 'User id required'],
+        unique: true,
+        ref: 'User'
     },
     gender: {
         type: String,
@@ -60,7 +70,6 @@ const studentSchema = new Schema<IStudent>({
             },
             message: 'Email is not a valid format'
         }, unique: true
-
     },
     contactNo: {
         type: String,
@@ -105,16 +114,35 @@ const studentSchema = new Schema<IStudent>({
         type: localGurdianSchema,
         required: [true, 'Local guardian information is required']
     },
-    profileImg: { type: String },
-    isActive: {
-        type: String,
-        enum: {
-            values: ['active', 'blocked'],
-            message: '{VALUE} is not a valid status'
-        },
-        required: [true, 'Status is required'],
-        default: 'active'
-    }
+    profileImg: { type: String }
+    // isActive: {
+    //     type: String,
+    //     enum: {
+    //         values: ['active', 'blocked'],
+    //         message: '{VALUE} is not a valid status'
+    //     },
+    //     required: [true, 'Status is required'],
+    //     default: 'active'
+    // }
 });
 
-export const StudentModel = model<IStudent>('User', studentSchema)
+
+studentSchema.pre('find', async function (next) {
+    this.find({ isDeleted: { $ne: true } })
+
+    next()
+})
+studentSchema.pre('findOne', async function (next) {
+    this.findOne({ isDeleted: { $ne: true } })
+
+    next()
+})
+studentSchema.pre('aggregate', async function (next) {
+    this.pipeline().unshift({ $match: { isDeleted: { $ne: true } } })
+
+    next()
+})
+
+
+
+export const StudentModel = model<IStudent>('Student', studentSchema);

@@ -1,4 +1,4 @@
-import { Schema, model, connect } from 'mongoose';
+import { Schema, model, connect, ObjectId, Types } from 'mongoose';
 
 export interface UserName {
     firstName: string
@@ -22,6 +22,8 @@ export type LocalGurdian = {
 }
 export interface IStudent {
     id: string
+    user: Types.ObjectId,
+    password: string,
     name: UserName
     email: string;
     avatar?: string;
@@ -34,7 +36,7 @@ export interface IStudent {
     permanentAddress: string
     gurdian: Gurdian
     profileImg?: string
-    isActive: 'active' | 'blocked'
+    // isActive: 'active' | 'blocked'
     localGurdian: LocalGurdian
 }
 type studentMethod = {

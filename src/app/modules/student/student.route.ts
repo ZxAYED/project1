@@ -7,6 +7,7 @@ const router = express.Router()
 
 router.get('/', StundentControllers.getAllStudents)
 router.get('/:studentId', StundentControllers.getSingleStudent)
+router.delete('/:studentId', StundentControllers.deleteStudent)
 
 
 

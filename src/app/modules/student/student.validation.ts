@@ -23,6 +23,7 @@ const localGurdianValidationSchema = z.object({
 
 const studentValidationSchema = z.object({
     id: z.string(),
+    password: z.string().max(20),
     name: userNameValidationSchema,
     gender: z.enum(["male", "female", "others"],
         { message: '{VALUE} is not a valid gender' }),
@@ -39,8 +40,13 @@ const studentValidationSchema = z.object({
     gurdian: gurdianValidationSchema,
     localGurdian: localGurdianValidationSchema,
     profileImg: z.string().optional(),
-    isActive: z.enum(['active', 'blocked'],
-        { message: '{VALUE} is not a valid status' })
+    // isActive: z.enum(['active', 'blocked'],
+    //     { message: '{VALUE} is not a valid status' }).default('active'),
+    isDeleted: z.boolean()
 });
+
+
+
+
 
 export default studentValidationSchema  

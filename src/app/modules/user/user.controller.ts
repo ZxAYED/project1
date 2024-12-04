@@ -1,12 +1,13 @@
+import studentValidationSchema from "../student/student.validation";
 import { userService } from "./user.service";
 
 
 
 const createStudent = async (req: Request, res: Response) => {
     try {
-        const { password: string, student: studentData } = req.body
+        const { password, student: studentData } = req.body
 
-        // const zodParsedData = studentValidationSchema.parse(studentData)
+        const zodParsedData = studentValidationSchema.parse(studentData)
 
 
         // calling data from service
@@ -19,6 +20,13 @@ const createStudent = async (req: Request, res: Response) => {
         })
     }
     catch (error) {
-        console.log(error);
+        res.status(200).json({
+            success: false,
+            message: "Error  while creating  a student ",
+            data: error
+        })
     }
+}
+export const userController = {
+    createStudent
 }
