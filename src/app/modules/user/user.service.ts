@@ -13,9 +13,10 @@ const createStudentIntoDB = async (password: string, studentData: IStudent) => {
     let userData: Partial<TUser> = {}
     userData.password = password || config.default_pass as string
     userData.role = 'student'
-
+    userData.id = studentData.id
+    userData.email = studentData.email
     // manually generating id
-    userData.id = '203010001'
+
 
 
 

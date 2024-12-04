@@ -1,11 +1,11 @@
-import { Request, Response } from "express";
+import { NextFunction, Request, Response } from "express";
 import { StudentServices } from './student.service';
 
 
 
 
 
-const getAllStudents = async (req: Request, res: Response) => {
+const getAllStudents = async (req: Request, res: Response, next: NextFunction) => {
     try {
         const result = await StudentServices.getAllStudentsFromDb()
 
@@ -16,14 +16,10 @@ const getAllStudents = async (req: Request, res: Response) => {
         })
     }
     catch (error) {
-        res.status(500).json({
-            success: true,
-            message: "Error while retriving students",
-            data: error
-        })
+        next(error)
     }
 }
-const getSingleStudent = async (req: Request, res: Response) => {
+const getSingleStudent = async (req: Request, res: Response, next: NextFunction) => {
     try {
         const studentId = req.params.studentId
 
@@ -36,14 +32,10 @@ const getSingleStudent = async (req: Request, res: Response) => {
         })
     }
     catch (error) {
-        res.status(500).json({
-            success: true,
-            message: "Error while retriving  a student",
-            data: error
-        })
+        next(error)
     }
 }
-const deleteStudent = async (req: Request, res: Response) => {
+const deleteStudent = async (req: Request, res: Response, next: NextFunction) => {
     try {
         const studentId = req.params.studentId
 
@@ -56,11 +48,7 @@ const deleteStudent = async (req: Request, res: Response) => {
         })
     }
     catch (error) {
-        res.status(500).json({
-            success: true,
-            message: "Error while deleting a student",
-            data: error
-        })
+        next(error)
     }
 }
 

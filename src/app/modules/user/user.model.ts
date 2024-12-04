@@ -36,19 +36,17 @@ const userSchema = new Schema<TUser>({
 
 
 userSchema.pre('save', async function (next) {
-
     try {
         const bcrypt = await import('bcrypt-ts');
-        const salt = bcrypt.genSaltSync(Number(config.bcrypt_salt));
+        const salt = await bcrypt.genSaltSync(Number(config.bcrypt_salt));
         this.password = await bcrypt.hashSync(this.password, salt);
         next();
     }
-    catch (error) {
-        console.log(error)
-    };
+    catch (error: unknown) {
+        console.log(error);
 
-})
-
+    }
+});
 
 
 userSchema.post('save', async function (doc, next) {
