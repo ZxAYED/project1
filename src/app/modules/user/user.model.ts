@@ -1,7 +1,7 @@
 import { model, Schema } from "mongoose";
 import { TUser } from "./user.interface";
 import config from "../../config";
-
+import bcrypt from 'bcryptjs'
 const userSchema = new Schema<TUser>({
     id: {
         type: String,
@@ -35,17 +35,19 @@ const userSchema = new Schema<TUser>({
 })
 
 
-userSchema.pre('save', async function (next) {
-    try {
-        const bcrypt = await import('bcrypt-ts');
-        const salt = await bcrypt.genSaltSync(Number(config.bcrypt_salt));
-        this.password = await bcrypt.hashSync(this.password, salt);
-        next();
-    }
-    catch (error: unknown) {
-        console.log(error);
+userSchema.pre('save', function (next) {
+    const user = this;
 
-    }
+    bcrypt.genSalt(Number(config.bcrypt_salt), (err, salt) => {
+        if (err) return next(err);
+
+        bcrypt.hash(user.password, salt, (err, hash) => {
+            if (err) return next(err);
+
+            user.password = hash;
+            next();
+        });
+    });
 });
 
 
