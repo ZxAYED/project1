@@ -21,32 +21,38 @@ const localGurdianValidationSchema = z.object({
     contactNo: z.string()
 });
 
-const studentValidationSchema = z.object({
-    id: z.string(),
-    password: z.string().max(20),
-    name: userNameValidationSchema,
-    gender: z.enum(["male", "female", "others"],
-        { message: '{VALUE} is not a valid gender' }),
-    dateOfBirth: z.string().optional(),
-    email: z.string().email('Email is not a valid format'),
-    contactNo: z.string().refine((v) => /^\d+$/.test(v),
-        { message: 'Contact number must be numeric' }),
-    emergencryContactNo: z.string().refine((v) => /^\d+$/.test(v),
-        { message: 'Emergency contact number must be numeric' }),
-    bloodGroup: z.enum(['A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-'],
-        { message: '{VALUE} is not a valid blood group' }).optional(),
-    presendAddress: z.string(),
-    permanentAddress: z.string(),
-    gurdian: gurdianValidationSchema,
-    localGurdian: localGurdianValidationSchema,
-    profileImg: z.string().optional(),
-    // isActive: z.enum(['active', 'blocked'],
-    //     { message: '{VALUE} is not a valid status' }).default('active'),
-    isDeleted: z.boolean()
+const createStudentValidationSchema = z.object({
+    body: z.object({
+        // id: z.string(),
+        password: z.string().max(20),
+        student: z.object({
+            name: userNameValidationSchema,
+            gender: z.enum(["male", "female", "others"],
+                { message: '{VALUE} is not a valid gender' }),
+            dateOfBirth: z.string().optional(),
+            email: z.string().email('Email is not a valid format'),
+            contactNo: z.string().refine((v) => /^\d+$/.test(v),
+                { message: 'Contact number must be numeric' }),
+            emergencryContactNo: z.string().refine((v) => /^\d+$/.test(v),
+                { message: 'Emergency contact number must be numeric' }),
+            bloodGroup: z.enum(['A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-'],
+                { message: '{VALUE} is not a valid blood group' }).optional(),
+            presendAddress: z.string(),
+            permanentAddress: z.string(),
+            gurdian: gurdianValidationSchema,
+            localGurdian: localGurdianValidationSchema,
+            profileImg: z.string().optional(),
+        })
+        // isActive: z.enum(['active', 'blocked'],
+        //     { message: '{VALUE} is not a valid status' }).default('active'),
+        // isDeleted: z.boolean()
+    })
 });
 
 
 
 
 
-export default studentValidationSchema  
+export const studentValidations = {
+    createStudentValidationSchema
+}

@@ -41,7 +41,7 @@ const localGurdianSchema = new Schema<LocalGurdian>({
 });
 
 const studentSchema = new Schema<IStudent>({
-    id: { type: String, unique: true, required: true },
+    // id: { type: String, unique: true, required: true },
     name: {
         type: userNameSchema,
         required: [true, 'Name is required']
@@ -124,6 +124,8 @@ const studentSchema = new Schema<IStudent>({
     //     required: [true, 'Status is required'],
     //     default: 'active'
     // }
+}, {
+    timestamps: true
 });
 
 

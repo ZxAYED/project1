@@ -21,7 +21,7 @@ export type LocalGurdian = {
     address: string
 }
 export interface IStudent {
-    id: string
+    // id: string
     user: Types.ObjectId,
     password: string,
     name: UserName
