@@ -15,7 +15,7 @@ export const monthEnum: IMonth[] = [
     "November",
     "December"
 ]
-export const nameEnum: IName[] = ['Autumn', 'Summer ', 'Fall']
+export const nameEnum: IName[] = ['Autumn', 'Summer', 'Fall']
 export const codeEnum: ICode[] = ['01', '02', '03']
 
 const academicSemesterSchema = new Schema<IAcademicSemester>(
@@ -27,7 +27,7 @@ const academicSemesterSchema = new Schema<IAcademicSemester>(
 
         },
         year: {
-            type: Date,
+            type: String,
             required: true,
 
         },
@@ -49,5 +49,24 @@ const academicSemesterSchema = new Schema<IAcademicSemester>(
     }, {
     timestamps: true
 })
+
+academicSemesterSchema.pre('save', async function (next) {
+    const isSemesterExits = await academicSemesterModel.findOne({
+        name: this.name,
+        year: this.year
+    })
+    if (isSemesterExits) {
+        throw new Error('Semester already exits')
+    }
+
+    next()
+
+})
+
+
+
+
+
+
 
 export const academicSemesterModel = model<IAcademicSemester>('academicSemester', academicSemesterSchema)
