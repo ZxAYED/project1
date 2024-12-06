@@ -29,7 +29,7 @@ const createStudentValidationSchema = z.object({
             name: userNameValidationSchema,
             gender: z.enum(["male", "female", "others"],
                 { message: '{VALUE} is not a valid gender' }),
-            dateOfBirth: z.string().optional(),
+            dateOfBirth: z.date().optional(),
             email: z.string().email('Email is not a valid format'),
             contactNo: z.string().refine((v) => /^\d+$/.test(v),
                 { message: 'Contact number must be numeric' }),

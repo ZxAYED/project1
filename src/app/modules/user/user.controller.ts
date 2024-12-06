@@ -1,5 +1,4 @@
 import { NextFunction, Request, RequestHandler, Response } from "express";
-import studentValidationSchema from "../student/student.validation";
 import { userService } from "./user.service";
 import catchAsyncError from "../../utils/catchAsync";
 
