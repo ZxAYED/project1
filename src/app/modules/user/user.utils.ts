@@ -10,15 +10,26 @@ const findLastStudentId = async () => {
         createdAt: -1
     }).lean();
 
-    const lastId = LastStudent?.id ? LastStudent.id.substring(6) : undefined;
+    const lastId = LastStudent?.id ? LastStudent.id : undefined;
 
 
     return lastId;
 };
 
 export const generateStudentId = async (payload: IAcademicSemester) => {
-    const currentId = await findLastStudentId();
+    const fullCurrentId = await findLastStudentId();
+    let currentId = (0).toString
+    const currentIdSemesterCode = fullCurrentId?.substring(4, 6)
+    const currentIdYear = fullCurrentId?.substring(0, 4)
+
+
+    if (fullCurrentId && currentIdSemesterCode === payload.code && currentIdYear === payload.year) {
+        let currentId = fullCurrentId.substring(6)
+
+    }
+
     const numericCurrentId = isNaN(Number(currentId)) ? 0 : Number(currentId);
+
 
     let incrementId = (numericCurrentId + 1).toString().padStart(4, '0');
 
