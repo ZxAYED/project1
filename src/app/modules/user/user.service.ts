@@ -1,23 +1,31 @@
 import config from "../../config"
+import { IAcademicSemester } from "../academicSemester/academicSemester.interface"
+import { academicSemesterModel } from "../academicSemester/academicSemester.model"
 import { IStudent } from "../student/student.interface"
 import { StudentModel } from "../student/student.model"
 import { TUser } from "./user.interface"
-
 import { userModel } from "./user.model"
+import { generateStudentId } from "./user.utils"
+
+
+
+
+
 
 const createStudentIntoDB = async (password: string, studentData: IStudent) => {
 
     // create a user object 
-
-
     let userData: Partial<TUser> = {}
     userData.password = password || config.default_pass as string
     userData.role = 'student'
-    userData.id = studentData.id
+
     userData.email = studentData.email
-    // manually generating id
 
+    // generating id
 
+    const admissionSemester = await academicSemesterModel.findById(studentData.admissionSemester)
+
+    userData.id = await generateStudentId(admissionSemester)
 
 
     // creating user 

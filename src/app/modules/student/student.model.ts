@@ -1,7 +1,8 @@
-import { Schema, model } from 'mongoose';
+import { Schema, Types, model } from 'mongoose';
 import { Gurdian, LocalGurdian, IStudent, UserName } from './student.interface';
 
 import config from '../../config';
+import { ObjectId } from 'mongoose';
 
 const userNameSchema = new Schema<UserName>({
     firstName: {
@@ -41,7 +42,7 @@ const localGurdianSchema = new Schema<LocalGurdian>({
 });
 
 const studentSchema = new Schema<IStudent>({
-    // id: { type: String, unique: true, required: true },
+    id: { type: String, unique: true, required: true },
     name: {
         type: userNameSchema,
         required: [true, 'Name is required']
@@ -51,6 +52,10 @@ const studentSchema = new Schema<IStudent>({
         required: [true, 'User id required'],
         unique: true,
         ref: 'User'
+    },
+    admissionSemester: {
+        type: Types.ObjectId,
+        ref: 'academicSemester'
     },
     gender: {
         type: String,

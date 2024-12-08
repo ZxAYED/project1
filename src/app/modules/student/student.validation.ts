@@ -1,5 +1,6 @@
 import { z } from "zod";
 
+
 const userNameValidationSchema = z.object({
     firstName: z.string().max(20, 'First name character must be in 20 letters').trim(),
     middleName: z.string().max(20, 'Middle name character must be in 20 letters').trim(),
@@ -23,13 +24,13 @@ const localGurdianValidationSchema = z.object({
 
 const createStudentValidationSchema = z.object({
     body: z.object({
-        // id: z.string(),
+        id: z.string().optional(),
         password: z.string().max(20),
         student: z.object({
             name: userNameValidationSchema,
             gender: z.enum(["male", "female", "others"],
                 { message: '{VALUE} is not a valid gender' }),
-            dateOfBirth: z.date().optional(),
+            dateOfBirth: z.string().optional(),
             email: z.string().email('Email is not a valid format'),
             contactNo: z.string().refine((v) => /^\d+$/.test(v),
                 { message: 'Contact number must be numeric' }),
@@ -41,6 +42,7 @@ const createStudentValidationSchema = z.object({
             permanentAddress: z.string(),
             gurdian: gurdianValidationSchema,
             localGurdian: localGurdianValidationSchema,
+            admissionSemester: z.string(),
             profileImg: z.string().optional(),
         })
         // isActive: z.enum(['active', 'blocked'],

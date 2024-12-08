@@ -21,7 +21,7 @@ export type LocalGurdian = {
     address: string
 }
 export interface IStudent {
-    // id: string
+    id: string,
     user: Types.ObjectId,
     password: string,
     name: UserName
@@ -35,7 +35,8 @@ export interface IStudent {
     presendAddress: string
     permanentAddress: string
     gurdian: Gurdian
-    profileImg?: string
+    profileImg?: string,
+    admissionSemester: ObjectId,
     // isActive: 'active' | 'blocked'
     localGurdian: LocalGurdian
 }
