@@ -9,10 +9,11 @@ const academicFacultySchema = new Schema<IAcademicFaculty>(
     {
         name: {
             required: true,
-            type: String
+            type: String,
+            unique: true
         }
     },
     { timestamps: true }
 )
 
-export const academicFacultyModel = model<IAcademicFaculty>('AcademicFaculty', academicFacultySchema)
+export const academicFacultyModel = model<IAcademicFaculty>('Academic-Faculty', academicFacultySchema)
