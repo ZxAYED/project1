@@ -36,7 +36,8 @@ export interface IStudent {
     permanentAddress: string
     gurdian: Gurdian
     profileImg?: string,
-    admissionSemester: ObjectId,
+    academicSemester: ObjectId,
+    academicDepartment: ObjectId,
     // isActive: 'active' | 'blocked'
     localGurdian: LocalGurdian
 }

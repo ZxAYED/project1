@@ -10,7 +10,7 @@ const router = express.Router()
 
 // validateRequest(academicFacultyValidationSchema.createAcademicFacultyValidationSchema), 
 
-router.post('/create-Faculty', validateRequest(academicFacultyValidaiton.createAcademicFacultyValidaiton), academicFacultyControllers.createAcademicFaculty)
+router.post('/create-faculty', validateRequest(academicFacultyValidaiton.createAcademicFacultyValidaiton), academicFacultyControllers.createAcademicFaculty)
 
 router.get('/', academicFacultyControllers.getAllFaculty)
 
