@@ -2,6 +2,7 @@
 import { ObjectId } from "mongoose";
 import { IAcademicSemester, TAcademicSemesterNameCodeMapper } from "./academicSemester.interface";
 import { academicSemesterModel } from "./academicSemester.model";
+import AppError from "../../errors/appError";
 
 
 const academicSemesterNameCodeMapper: TAcademicSemesterNameCodeMapper = {
@@ -13,7 +14,7 @@ const createAcademicSemesterIntoDb = async (payload: IAcademicSemester) => {
 
 
     if (academicSemesterNameCodeMapper[payload.name] !== payload.code) {
-        throw new Error('Invalid semester Name / Code')
+        throw new AppError(400, 'Invalid semester Name / Code')
     }
 
     const result = await academicSemesterModel.create(payload)
@@ -39,7 +40,7 @@ const deleteSemesterFromDb = async (id: string) => {
 const updateSemesterFromDb = async (id: string, payload: Partial<IAcademicSemester>) => {
     if (academicSemesterNameCodeMapper[payload.name] !== payload.code) {
 
-        throw new Error('Invalid semester Name / Code')
+        throw new AppError(400, 'Invalid semester Name / Code')
     }
 
     const result = await academicSemesterModel.findByIdAndUpdate({ _id: id }, payload, { new: true })

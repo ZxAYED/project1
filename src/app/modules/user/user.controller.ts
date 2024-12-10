@@ -1,6 +1,7 @@
 import { NextFunction, Request, RequestHandler, Response } from "express";
 import { userService } from "./user.service";
 import catchAsyncError from "../../utils/catchAsync";
+import AppError from "../../errors/appError";
 
 
 
@@ -13,10 +14,10 @@ const createStudent = catchAsyncError(async (req: Request, res: Response, next: 
 
     // const zodParsedData = studentValidationSchema.parse({ password, ...studentData })
     if (!password) {
-        throw new Error("Password is required");
+        throw new AppError(400, "Password is required");
     }
     if (!studentData.email) {
-        throw new Error("Email is required and cannot be null");
+        throw new AppError(400, "Email is required and cannot be null");
     }
     // console.log("Creating student with data:", studentData, password);
 

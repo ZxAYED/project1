@@ -1,5 +1,6 @@
 import { model, Schema } from "mongoose";
 import { IAcademicSemester, ICode, IMonth, IName } from "./academicSemester.interface";
+import AppError from "../../errors/appError";
 
 export const monthEnum: IMonth[] = [
     "January",
@@ -56,7 +57,7 @@ academicSemesterSchema.pre('save', async function (next) {
         year: this.year
     })
     if (isSemesterExits) {
-        throw new Error('Semester already exits')
+        throw new AppError(409, 'Semester already exits')
     }
 
     next()

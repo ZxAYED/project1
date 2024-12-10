@@ -1,3 +1,4 @@
+import mongoose from "mongoose"
 import config from "../../config"
 import { IAcademicSemester } from "../academicSemester/academicSemester.interface"
 import { academicSemesterModel } from "../academicSemester/academicSemester.model"
@@ -6,6 +7,7 @@ import { StudentModel } from "../student/student.model"
 import { TUser } from "./user.interface"
 import { userModel } from "./user.model"
 import { generateStudentId } from "./user.utils"
+import AppError from "../../errors/appError"
 
 
 
@@ -21,26 +23,42 @@ const createStudentIntoDB = async (password: string, studentData: IStudent) => {
 
     userData.email = studentData.email
 
-    // generating id
+    const session = await mongoose.startSession()
+    try {
+        session.startTransaction()
+        const admissionSemester = await academicSemesterModel.findById(studentData.academicSemester)
 
-    const admissionSemester = await academicSemesterModel.findById(studentData.admissionSemester)
-
-    userData.id = await generateStudentId(admissionSemester)
+        userData.id = await generateStudentId(admissionSemester)
 
 
-    // creating user 
-    const newUser = await userModel.create(userData)
-    if (Object.keys(newUser).length) {
+        // creating user 
+        const newUser = await userModel.create([userData], { session })
+        if (!newUser.length) {
+            throw new AppError(400, "Failed to Create an user")
+        }
+
         // set id ,_id as user
-        studentData.id = newUser.id
-        studentData.user = newUser._id // reference id
+        studentData.id = newUser[0].id
+        studentData.user = newUser[0]._id // reference id
 
+
+        //  student creation transection 2
+        const newStudent = await StudentModel.create([studentData], { session })
+        if (!newStudent.length) {
+
+            throw new AppError(400, "Failed to Create an user")
+        }
+        await session.commitTransaction()
+        session.endSession()
+        return newStudent
     }
-    //  student creation
-    const newStudent = await StudentModel.create(studentData)
-    return newStudent
+    catch (err) {
+        await session.abortTransaction()
+        session.endSession()
+    }
 
 }
 export const userService = {
     createStudentIntoDB
 }
+

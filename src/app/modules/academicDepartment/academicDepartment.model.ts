@@ -43,7 +43,7 @@ academicDepartmentSchema.pre('findOneAndUpdate', async function (next) {
         query
     })
     if (!isDepartmentExist) {
-        throw new Error('This department does not exits!')
+        throw new AppError(404, 'This department does not exits!')
     }
     next()
 })
