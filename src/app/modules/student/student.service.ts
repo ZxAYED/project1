@@ -3,6 +3,7 @@ import mongoose from "mongoose";
 import { StudentModel } from "./student.model";
 import AppError from "../../errors/appError";
 import { userModel } from "../user/user.model";
+import { IStudent } from "./student.interface";
 
 
 
@@ -22,6 +23,32 @@ const getSingleStudentsFromDb = async (id: string) => {
             path: 'academicFaculty'
         }
     })
+    return result
+}
+const updateStudentsIntoDb = async (id: string, payload: Partial<IStudent>) => {
+
+    const { name, localGurdian, gurdian, ...remainingStudentData } = payload
+    const modifiedData: Record<string, unknown> = { remainingStudentData }
+    if (name && Object.keys(name).length) {
+        for (const [key, value] of Object.entries(name)) {
+            modifiedData[`name.${key}`] = value
+        }
+    }
+    if (gurdian && Object.keys(gurdian).length) {
+        for (const [key, value] of Object.entries(gurdian)) {
+            modifiedData[`gurdian.${key}`] = value
+        }
+    }
+    if (localGurdian && Object.keys(localGurdian).length) {
+        for (const [key, value] of Object.entries(localGurdian)) {
+            modifiedData[`localGurdian.${key}`] = value
+        }
+    }
+
+
+
+
+    const result = await StudentModel.findByIdAndUpdate({ _id: id }, modifiedData, { new: true, runValidators: true })
     return result
 }
 const deleteStudentsFromDb = async (id: string) => {
@@ -47,6 +74,7 @@ const deleteStudentsFromDb = async (id: string) => {
     catch (err) {
         await session.abortTransaction()
         await session.endSession()
+        throw new AppError(500, "Student creation failed")
     }
 }
 
@@ -56,5 +84,6 @@ const deleteStudentsFromDb = async (id: string) => {
 export const StudentServices = {
 
     getAllStudentsFromDb,
-    getSingleStudentsFromDb, deleteStudentsFromDb
+    getSingleStudentsFromDb, deleteStudentsFromDb,
+    updateStudentsIntoDb
 }

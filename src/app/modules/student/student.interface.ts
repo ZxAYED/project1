@@ -1,4 +1,4 @@
-import { Schema, model, connect, ObjectId, Types } from 'mongoose';
+import { ObjectId, Types } from 'mongoose';
 
 export interface UserName {
     firstName: string
@@ -39,7 +39,8 @@ export interface IStudent {
     academicSemester: ObjectId,
     academicDepartment: ObjectId,
     // isActive: 'active' | 'blocked'
-    localGurdian: LocalGurdian
+    localGurdian: LocalGurdian,
+    isDeleted?: boolean
 }
 type studentMethod = {
     isUserExists(id: string): Promise<IStudent>

@@ -1,6 +1,4 @@
-import mongoose from "mongoose"
 import config from "../../config"
-import { IAcademicSemester } from "../academicSemester/academicSemester.interface"
 import { academicSemesterModel } from "../academicSemester/academicSemester.model"
 import { IStudent } from "../student/student.interface"
 import { StudentModel } from "../student/student.model"
@@ -8,10 +6,7 @@ import { TUser } from "./user.interface"
 import { userModel } from "./user.model"
 import { generateStudentId } from "./user.utils"
 import AppError from "../../errors/appError"
-
-
-
-
+import mongoose from "mongoose"
 
 
 const createStudentIntoDB = async (password: string, studentData: IStudent) => {
@@ -24,15 +19,17 @@ const createStudentIntoDB = async (password: string, studentData: IStudent) => {
     userData.email = studentData.email
 
     const session = await mongoose.startSession()
+
     try {
         session.startTransaction()
-        const admissionSemester = await academicSemesterModel.findById(studentData.academicSemester)
+        const academicSemester = await academicSemesterModel.findById(studentData.academicSemester)
 
-        userData.id = await generateStudentId(admissionSemester)
+        userData.id = await generateStudentId(academicSemester)
 
 
-        // creating user 
+
         const newUser = await userModel.create([userData], { session })
+
         if (!newUser.length) {
             throw new AppError(400, "Failed to Create an user")
         }
@@ -44,6 +41,7 @@ const createStudentIntoDB = async (password: string, studentData: IStudent) => {
 
         //  student creation transection 2
         const newStudent = await StudentModel.create([studentData], { session })
+
         if (!newStudent.length) {
 
             throw new AppError(400, "Failed to Create an user")
@@ -51,10 +49,12 @@ const createStudentIntoDB = async (password: string, studentData: IStudent) => {
         await session.commitTransaction()
         session.endSession()
         return newStudent
+
     }
     catch (err) {
         await session.abortTransaction()
         session.endSession()
+        throw new AppError(500, "Creation failed at user service")
     }
 
 }

@@ -46,7 +46,19 @@ const deleteStudent = catchAsyncError(async (req: Request, res: Response, next: 
 
 })
 
+const updateStudent = catchAsyncError(async (req: Request, res: Response, next: NextFunction) => {
 
-export const StundentControllers = {
-    getAllStudents, getSingleStudent, deleteStudent
+
+
+    const result = await StudentServices.updateStudentsIntoDb(req.params.studentId, req.body.student)
+
+    res.status(200).json({
+        success: true,
+        message: "student  retrieved successfully",
+        data: result
+    })
+
+})
+export const StudentControllers = {
+    getAllStudents, getSingleStudent, deleteStudent, updateStudent
 }

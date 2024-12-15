@@ -1,15 +1,15 @@
 import express from 'express'
-import { StundentControllers } from './student.controller'
+import { StudentControllers } from './student.controller'
 
 const router = express.Router()
 
 
 
-router.get('/', StundentControllers.getAllStudents)
-router.get('/:studentId', StundentControllers.getSingleStudent)
-router.delete('/:studentId', StundentControllers.deleteStudent)
+router.get('/', StudentControllers.getAllStudents)
+router.get('/:studentId', StudentControllers.getSingleStudent)
+router.delete('/:studentId', StudentControllers.deleteStudent)
 
-
+router.patch('/:studentId', StudentControllers.updateStudent)
 
 
 export const studentRoutes = router

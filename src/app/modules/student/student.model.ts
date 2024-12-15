@@ -1,5 +1,7 @@
 import { Schema, model } from 'mongoose';
 import { Gurdian, LocalGurdian, IStudent, UserName } from './student.interface';
+import AppError from '../../errors/appError';
+
 
 
 
@@ -100,6 +102,11 @@ const studentSchema = new Schema<IStudent>({
             message: 'Emergency contact number must be numeric'
         }
     },
+    isDeleted: {
+        type: Boolean,
+        optional: true,
+        default: false
+    },
     bloodGroup: {
         type: String,
         enum: {
@@ -147,6 +154,14 @@ studentSchema.pre('find', async function (next) {
 studentSchema.pre('findOne', async function (next) {
     this.findOne({ isDeleted: { $ne: true } })
 
+    next()
+})
+studentSchema.pre('findOne', async function (next) {
+    const query = this.getQuery()
+    this.findOne({ _id: query })
+    if (!query) {
+        throw new AppError(400, "Id not found")
+    }
     next()
 })
 studentSchema.pre('aggregate', async function (next) {
