@@ -38,7 +38,7 @@ const createStudentValidationSchema = z.object({
                 { message: 'Emergency contact number must be numeric' }),
             bloodGroup: z.enum(['A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-'],
                 { message: '{VALUE} is not a valid blood group' }).optional(),
-            presendAddress: z.string(),
+            presentAddress: z.string(),
             permanentAddress: z.string(),
             gurdian: gurdianValidationSchema,
             localGurdian: localGurdianValidationSchema,

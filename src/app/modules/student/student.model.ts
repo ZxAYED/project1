@@ -56,11 +56,11 @@ const studentSchema = new Schema<IStudent>({
     },
     academicSemester: {
         type: Schema.Types.ObjectId,
-        ref: 'academicSemester'
+        ref: 'Academic-Semester'
     },
     academicDepartment: {
         type: Schema.Types.ObjectId,
-        ref: 'academicDepartment'
+        ref: 'Academic-Department'
     },
     gender: {
         type: String,
@@ -114,7 +114,7 @@ const studentSchema = new Schema<IStudent>({
             message: '{VALUE} is not a valid blood group'
         }
     },
-    presendAddress: {
+    presentAddress: {
         type: String,
         required: [true, 'Present address is required']
     },

@@ -24,7 +24,7 @@ export const generateStudentId = async (payload: IAcademicSemester) => {
 
 
     if (fullCurrentId && currentIdSemesterCode === payload.code && currentIdYear === payload.year) {
-        let currentId = fullCurrentId.substring(6)
+        currentId = fullCurrentId.substring(6)
 
     }
 
@@ -34,6 +34,6 @@ export const generateStudentId = async (payload: IAcademicSemester) => {
     let incrementId = (numericCurrentId + 1).toString().padStart(4, '0');
 
     incrementId = `${payload.year}${payload.code}${incrementId}`;
-    console.log(`Increment ID: ${incrementId}`);
+
     return incrementId;
 };

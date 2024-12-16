@@ -7,8 +7,20 @@ import { IStudent } from "./student.interface";
 
 
 
-const getAllStudentsFromDb = async () => {
-    const result = await StudentModel.find().populate('academicSemester').populate({
+const getAllStudentsFromDb = async (query: Record<string, unknown>) => {
+
+    let searchTerm = ''
+    if (query?.searchTerm) {
+        searchTerm = query.searchTerm
+    }
+
+    const queryFinder = searchTerm ? {
+        $or: ['email', 'id', 'name.firstName', 'contactNo', 'presentAddress'].map((field) => ({
+            [field]: { $regex: searchTerm, $options: 'i' }
+        }))
+    } : {};
+
+    const result = await StudentModel.find(queryFinder).populate('academicSemester').populate({
         path: 'academicDepartment',
         populate: {
             path: 'academicFaculty'
@@ -25,10 +37,13 @@ const getSingleStudentsFromDb = async (id: string) => {
     })
     return result
 }
+
 const updateStudentsIntoDb = async (id: string, payload: Partial<IStudent>) => {
 
     const { name, localGurdian, gurdian, ...remainingStudentData } = payload
+
     const modifiedData: Record<string, unknown> = { remainingStudentData }
+
     if (name && Object.keys(name).length) {
         for (const [key, value] of Object.entries(name)) {
             modifiedData[`name.${key}`] = value

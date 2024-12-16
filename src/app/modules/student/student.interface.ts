@@ -32,7 +32,7 @@ export interface IStudent {
     contactNo: string
     emergencryContactNo: string
     bloodGroup?: 'A+' | 'A-' | 'B+' | 'B-' | 'AB+' | 'AB-' | 'O+' | 'O-',
-    presendAddress: string
+    presentAddress: string
     permanentAddress: string
     gurdian: Gurdian
     profileImg?: string,

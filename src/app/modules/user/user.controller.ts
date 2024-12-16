@@ -9,7 +9,7 @@ import AppError from "../../errors/appError";
 
 
 const createStudent = catchAsyncError(async (req: Request, res: Response, next: NextFunction) => {
-    console.log('user controller');
+
     const { password, student: studentData } = req.body
 
     // const zodParsedData = studentValidationSchema.parse({ password, ...studentData })

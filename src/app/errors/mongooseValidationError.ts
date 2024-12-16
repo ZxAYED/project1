@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
-import { IErrorSource } from "../interfaces";
+import { IErrorResponse, IErrorSource } from "../interfaces";
 
-const handeleMongooseError = (err: mongoose.Error.ValidationError) => {
+const handeleMongooseError = (err: mongoose.Error.ValidationError): IErrorResponse => {
 
     const errorSource: IErrorSource[] = Object.values(err.errors).map((val: mongoose.Error.ValidatorError | mongoose.Error.CastError) => {
         return {

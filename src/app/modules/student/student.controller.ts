@@ -6,14 +6,17 @@ import catchAsyncError from "../../utils/catchAsync";
 
 
 
-const getAllStudents = catchAsyncError(async (req: Request, res: Response, next: NextFunction) => {
-    const result = await StudentServices.getAllStudentsFromDb()
-    res.status(200).json({
-        success: true,
-        message: "student are retrieved successfully",
-        data: result
+const getAllStudents =
+    catchAsyncError(async (req: Request, res: Response, next: NextFunction) => {
+
+
+        const result = await StudentServices.getAllStudentsFromDb(req.query)
+        res.status(200).json({
+            success: true,
+            message: "student are retrieved successfully",
+            data: result
+        })
     })
-})
 
 
 

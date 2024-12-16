@@ -3,7 +3,11 @@ import { ZodError } from "zod"
 import config from "../config"
 
 import handeleMongooseError from "../errors/mongooseValidationError"
-import handleZodEror from "../errors/ZodError"
+import handleZodError from './../errors/zodError';
+import handleCastError from "../errors/CastError";
+import handleDuplicateError from "../errors/DuplicateError";
+import AppError from "../errors/appError";
+
 
 
 
@@ -25,7 +29,7 @@ const GlobalErrorHandler = (err: any, req: Request, res: Response, next: NextFun
 
 
     if (err instanceof ZodError) {
-        const simplifiedError = handleZodEror(err)
+        const simplifiedError = handleZodError(err)
         statusCode = simplifiedError.statusCode
         message = simplifiedError.message,
             ErrorSource = simplifiedError.errorSource
@@ -34,9 +38,48 @@ const GlobalErrorHandler = (err: any, req: Request, res: Response, next: NextFun
     }
     else if (err?.name === 'ValidationError') {
         const simplifiedError = handeleMongooseError(err)
-        statusCode = simplifiedError.statusCodes
+        statusCode = simplifiedError.statusCode
         message = simplifiedError.message,
             ErrorSource = simplifiedError.errorSource
+    }
+    else if (err?.name === 'CastError') {
+        const simplifiedError = handleCastError(err)
+        statusCode = simplifiedError.statusCode
+        message = simplifiedError.message,
+            ErrorSource = simplifiedError.errorSource
+    }
+    else if (err?.name === 11000) {
+        const simplifiedError = handleDuplicateError(err)
+        statusCode = simplifiedError.statusCode
+        message = simplifiedError.message,
+            ErrorSource = simplifiedError.errorSource
+    }
+    else if (err instanceof AppError) {
+
+        statusCode = err.statusCode
+        message = err.message,
+            ErrorSource = [{
+                path: 'No path found',
+                message: err?.message
+            }]
+    }
+    else if (err instanceof AppError) {
+
+        statusCode = err.statusCode
+        message = err.message,
+            ErrorSource = [{
+                path: 'No path found',
+                message: err?.message
+            }]
+    }
+    else if (err instanceof Error) {
+
+        statusCode
+        message,
+            ErrorSource = [{
+                path: 'No path found',
+                message: message
+            }]
     }
 
 
