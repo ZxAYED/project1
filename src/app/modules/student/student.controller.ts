@@ -13,7 +13,7 @@ const getAllStudents =
         const result = await StudentServices.getAllStudentsFromDb(req.query)
         res.status(200).json({
             success: true,
-            message: "student are retrieved successfully",
+            message: "Students info are being retrieved successfully",
             data: result
         })
     })
@@ -28,7 +28,7 @@ const getSingleStudent = catchAsyncError(async (req: Request, res: Response, nex
 
     res.status(200).json({
         success: true,
-        message: "student  retrieved successfully",
+        message: "Student info retrieved successfully",
         data: result
     })
 

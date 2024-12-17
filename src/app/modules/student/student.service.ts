@@ -4,29 +4,91 @@ import { StudentModel } from "./student.model";
 import AppError from "../../errors/appError";
 import { userModel } from "../user/user.model";
 import { IStudent } from "./student.interface";
+import QueryBuilder from "../../builder/QueryBuilder";
 
 
 
 const getAllStudentsFromDb = async (query: Record<string, unknown>) => {
 
-    let searchTerm = ''
-    if (query?.searchTerm) {
-        searchTerm = query.searchTerm
-    }
+    //     //  const { searchTerm = '', email = '' } = query as { searchTerm?: string; email?: string}
+    //     //  const queryCondition: any = { ...(searchTerm && { $or: ['email', 'id', 'name.firstName', 'contactNo', 'presentAddress'].map((field) => ({ [field]: { $regex: searchTerm, $options: 'i' } })) }), ...(email && { email })
 
-    const queryFinder = searchTerm ? {
-        $or: ['email', 'id', 'name.firstName', 'contactNo', 'presentAddress'].map((field) => ({
-            [field]: { $regex: searchTerm, $options: 'i' }
-        }))
-    } : {};
 
-    const result = await StudentModel.find(queryFinder).populate('academicSemester').populate({
+    // let searchTerm = ''
+    // if (query?.searchTerm) {
+    //     searchTerm = query.searchTerm as string
+    // }
+    // const queryObject = { ...query }
+
+    const studentSearchableField = ['name.firstName', 'email', 'presentAddress', 'contactNo', 'id']
+
+    // // cant use await  so that eitar load er jonne boshe thaka lagbe jeta dorkar nai eita poreo call hoitese
+
+    // const queryFinder = StudentModel.find(searchTerm ? {
+    //     $or: studentSearchableField.map((field) => ({
+    //         [field]: { $regex: searchTerm, $options: 'i' }
+    //     }))
+    // } : {})
+
+    // //  i have done the work of searchTerm in queryFinder thats y i removed the searchTerm and i will do sorting later i will do only email search r8 now thats y i query with email removed sort also .
+
+    // const excludeFields = ['searchTerm', 'sort', 'limit', 'page',]
+    // excludeFields.forEach(i => delete queryObject[i])
+
+    // const populateQuery = queryFinder.find(queryObject).populate('academicSemester').populate({
+    //     path: 'academicDepartment',
+    //     populate: {
+    //         path: 'academicFaculty'
+    //     }
+    // })
+
+
+
+    // let sort = '-createdAt'
+    // if (query.sort) {
+    //     sort = query.sort as string
+    // }
+    // const sortedQuery = populateQuery.sort(sort)
+
+
+
+    // let page = 1
+    // let limit = 1
+    // let skip = 0
+    // if (query.limit) {
+    //     limit = Number(query.limit)
+    // }
+    // if (query.page) {
+    //     page = Number(query.page)
+    //     skip = (page - 1) * limit
+    // }
+    // const paginateQuery = sortedQuery.skip(skip)
+
+
+
+    // let field = '-__V'
+    // if (query.field) {
+    //     field = (query.field as string).split(',').join(' ')
+    // }
+    // const fieldQuery = paginateQuery.select(field)
+
+
+    // const result = await fieldQuery.limit(limit)
+
+    // return result
+
+
+    const studentQuery = new QueryBuilder(StudentModel.find(), query).search(studentSearchableField).filter().sort().paginate().fields()
+
+    const result = await studentQuery.QueryModel.populate('academicSemester').populate({
         path: 'academicDepartment',
         populate: {
             path: 'academicFaculty'
         }
     })
+
     return result
+
 }
 const getSingleStudentsFromDb = async (id: string) => {
     const result = await StudentModel.findById({ _id: id }).populate('academicSemester').populate({
