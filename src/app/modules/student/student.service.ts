@@ -20,7 +20,7 @@ const getAllStudentsFromDb = async (query: Record<string, unknown>) => {
     // }
     // const queryObject = { ...query }
 
-    const studentSearchableField = ['name.firstName', 'email', 'presentAddress', 'contactNo', 'id']
+    const studentSearchableField = ['name.firstName', 'name.middleName', 'name.lastName', 'email', 'presentAddress', 'contactNo', 'id']
 
     // // cant use await  so that eitar load er jonne boshe thaka lagbe jeta dorkar nai eita poreo call hoitese
 
