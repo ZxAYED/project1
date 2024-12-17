@@ -4,7 +4,7 @@ import mongoose from 'mongoose';
 import QueryBuilder from '../../builder/QueryBuilder';
 import AppError from '../../errors/appError'
 import { userModel } from '../user/user.model';
-import { FacultySearchableFields } from './faculty.constrain';
+import { FacultySearchableFields } from './faculty.constant';
 import { TFaculty } from './faculty.interface';
 import { Faculty } from './faculty.model';
 
