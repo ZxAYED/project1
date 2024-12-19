@@ -3,6 +3,23 @@ import catchAsync from '../../utils/catchAsync';
 
 import { FacultyServices } from './faculty.service';
 import { RequestHandler } from 'express';
+import catchAsyncError from '../../utils/catchAsync';
+
+
+
+const createCourse = catchAsyncError(async (req, res) => {
+
+    const result = await FacultyServices.createFacultyIntoDb(req.body)
+    res.status(200).json({
+        message: 'Faculty Creation has been completed',
+        success: true,
+        data: result
+    })
+})
+
+
+
+
 
 const getSingleFaculty: RequestHandler = catchAsync(async (req, res) => {
     const { id } = req.params;
@@ -56,5 +73,5 @@ export const FacultyControllers = {
     getAllFaculties,
     getSingleFaculty,
     deleteFaculty,
-    updateFaculty,
+    updateFaculty, createCourse
 };

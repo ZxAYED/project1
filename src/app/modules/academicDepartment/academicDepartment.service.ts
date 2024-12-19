@@ -27,7 +27,7 @@ const getSingleDepartmentFromDb = async (id: string) => {
 }
 
 const deleteDepartmentFromDb = async (id: string) => {
-    const result = await academicDepartmentModel.findByIdAndDelete({ id })
+    const result = await academicDepartmentModel.findByIdAndDelete(id)
     return result
 }
 const updateDepartmentFromDb = async (id: string, payload: Partial<IAcademicDepartment>) => {

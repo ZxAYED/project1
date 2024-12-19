@@ -75,11 +75,11 @@ const GlobalErrorHandler = (err: any, req: Request, res: Response, next: NextFun
     else if (err instanceof Error) {
 
         statusCode
-        message,
-            ErrorSource = [{
-                path: 'No path found',
-                message: message
-            }]
+        message
+        ErrorSource = [{
+            path: 'No path found',
+            message: message
+        }]
     }
 
 

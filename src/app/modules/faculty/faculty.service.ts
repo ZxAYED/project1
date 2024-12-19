@@ -6,11 +6,12 @@ import AppError from '../../errors/appError'
 import { userModel } from '../user/user.model';
 import { FacultySearchableFields } from './faculty.constant';
 import { TFaculty } from './faculty.interface';
-import { Faculty } from './faculty.model';
+import { facultyModel } from './faculty.model';
+
 
 const getAllFacultiesFromDB = async (query: Record<string, unknown>) => {
     const facultyQuery = new QueryBuilder(
-        Faculty.find().populate('academicDepartment'),
+        facultyModel.find().populate('academicDepartment'),
         query,
     )
         .search(FacultySearchableFields)
@@ -24,7 +25,13 @@ const getAllFacultiesFromDB = async (query: Record<string, unknown>) => {
 };
 
 const getSingleFacultyFromDB = async (id: string) => {
-    const result = await Faculty.findById(id).populate('academicDepartment');
+    const result = await facultyModel.findById(id).populate('academicDepartment');
+
+    return result;
+};
+
+const createFacultyIntoDb = async (payload: TFaculty) => {
+    const result = await facultyModel.create(payload);
 
     return result;
 };
@@ -42,7 +49,7 @@ const updateFacultyIntoDB = async (id: string, payload: Partial<TFaculty>) => {
         }
     }
 
-    const result = await Faculty.findByIdAndUpdate(id, modifiedUpdatedData, {
+    const result = await facultyModel.findByIdAndUpdate(id, modifiedUpdatedData, {
         new: true,
         runValidators: true,
     });
@@ -55,7 +62,7 @@ const deleteFacultyFromDB = async (id: string) => {
     try {
         session.startTransaction();
 
-        const deletedFaculty = await Faculty.findByIdAndUpdate(
+        const deletedFaculty = await facultyModel.findByIdAndUpdate(
             id,
             { isDeleted: true },
             { new: true, session },
@@ -93,4 +100,5 @@ export const FacultyServices = {
     getSingleFacultyFromDB,
     updateFacultyIntoDB,
     deleteFacultyFromDB,
+    createFacultyIntoDb
 };

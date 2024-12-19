@@ -34,7 +34,7 @@ const getSingleSemesterFromDb = async (id: string) => {
 }
 
 const deleteSemesterFromDb = async (id: string) => {
-    const result = await academicSemesterModel.findByIdAndDelete({ id })
+    const result = await academicSemesterModel.findByIdAndDelete(id)
     return result
 }
 const updateSemesterFromDb = async (id: string, payload: Partial<IAcademicSemester>) => {
