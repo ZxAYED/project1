@@ -42,7 +42,18 @@ const deleteCourse = catchAsyncError(async (req, res) => {
 
 })
 const assginFacultiesWithCourse = catchAsyncError(async (req, res) => {
+    console.log(req.body, req.params.id);
     const result = courseService.assignFacultiesWithCourseIntoDb(req.params.id, req.body.faculties)
+    res.status(200).json({
+        message: 'Course has been deleted',
+        success: true,
+        data: result
+    })
+
+})
+const removeFacultiesWithCourse = catchAsyncError(async (req, res) => {
+    console.log(req.body, req.params.id);
+    const result = courseService.removeFacultiesWithCourseIntoDb(req.params.id, req.body.faculties)
     res.status(200).json({
         message: 'Course has been deleted',
         success: true,
@@ -70,5 +81,5 @@ const updateCourse = catchAsyncError(async (req, res): Promise<void> => {
 
 
 export const courseControllers = {
-    createCourse, getAllCourse, getSingleCourse, deleteCourse, updateCourse, assginFacultiesWithCourse
+    createCourse, getAllCourse, getSingleCourse, deleteCourse, updateCourse, assginFacultiesWithCourse, removeFacultiesWithCourse
 }

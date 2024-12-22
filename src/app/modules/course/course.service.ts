@@ -34,13 +34,23 @@ const deleteCoursefromDb = async (id: string) => {
     const result = await courseModel.findByIdAndUpdate(id, { isDeleted: true }, { new: true })
     return result
 }
+
 const assignFacultiesWithCourseIntoDb = async (id: string, payload: Partial<ICourseFaculty>) => {
 
+    const result = await courseFacultyModel.findByIdAndUpdate(id, {
+        course: id,
+        $addToSet: {
 
+            faculties: { $each: payload }
+        }
+    }, { upsert: true, new: true, runValidators: true })
+    return result
+}
+const removeFacultiesWithCourseIntoDb = async (id: string, payload: Partial<ICourseFaculty>) => {
 
     const result = await courseFacultyModel.findByIdAndUpdate(id, {
-        $addToSet: {
-            faculties: { $each: payload }
+        $pull: {
+            faculties: { $in: payload }
         }
     }, { upsert: true, new: true, runValidators: true })
     return result
@@ -99,11 +109,6 @@ const updateCourseFromDd = async (id: string, payload: Partial<ICourse>) => {
         }
         return result
 
-
-
-
-
-
     }
     catch (err) {
         await session.abortTransaction()
@@ -116,5 +121,5 @@ const updateCourseFromDd = async (id: string, payload: Partial<ICourse>) => {
 
 
 export const courseService = {
-    createCourseIntoDb, getAllCoursesFromDb, getSingleCourseFromDb, deleteCoursefromDb, updateCourseFromDd, assignFacultiesWithCourseIntoDb
+    createCourseIntoDb, getAllCoursesFromDb, getSingleCourseFromDb, deleteCoursefromDb, updateCourseFromDd, assignFacultiesWithCourseIntoDb, removeFacultiesWithCourseIntoDb
 }
