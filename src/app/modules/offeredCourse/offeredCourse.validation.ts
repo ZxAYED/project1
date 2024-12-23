@@ -34,20 +34,16 @@ const createOfferedCourseValidationSchema = z.object({
 
 const updateOfferedCourseValidationSchema = z.object({
     body: z.object({
-        semesterRegistration: z.string().optional(),
 
-        academicDepartment: z.string().optional(),
-        academicFaculty: z.string().optional(),
-        course: z.string().optional(),
-        faculty: z.string().optional(),
-        days: z.array(z.enum(Days as [string, ...string[]])).optional(),
-        startTime: z.string().optional().refine(time => timePattern.test(time), {
+        faculty: z.string(),
+        days: z.array(z.enum(Days as [string, ...string[]])),
+        startTime: z.string().refine(time => timePattern.test(time), {
             message: "Invalid time format. Expected HH:MM",
         }),
-        endTime: z.string().optional().refine(time => timePattern.test(time), {
+        endTime: z.string().refine(time => timePattern.test(time), {
             message: "Invalid time format. Expected HH:MM",
         }),
-        maxCapacity: z.number().min(1, "Max capacity must be at least 1").optional(),
+        maxCapacity: z.number().min(1, "Max capacity must be at least 1"),
         section: z.number().min(1, "Section must be at least 1").optional()
     }).refine((body) => {
         const start = new Date(`1970-01-01T${body.startTime}:00`);

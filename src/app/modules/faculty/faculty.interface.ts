@@ -19,6 +19,8 @@ export type TUserName = {
 };
 
 export type TFaculty = {
+    payload: Types.ObjectId;
+
     id: string;
     user: Schema.Types.ObjectId;
     designation: string;

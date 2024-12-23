@@ -44,12 +44,6 @@ const deleteOfferedCourse = catchAsyncError(async (req, res) => {
 
 const updateOfferedCourse = catchAsyncError(async (req, res): Promise<void> => {
     const result = offeredCourseService.updateOfferedCourseFromDd(req.params.id, req.body)
-    if (!result) {
-        res.status(404).json({
-            success: false,
-            message: 'Offered Course not found'
-        });
-    }
 
     res.status(200).json({
         success: true,

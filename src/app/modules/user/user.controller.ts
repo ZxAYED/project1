@@ -30,8 +30,33 @@ const createStudent = catchAsyncError(async (req: Request, res: Response, next: 
     })
 }
 )
+const createFaculty = catchAsyncError(async (req, res) => {
+    const { password, faculty: facultyData } = req.body;
+
+    const result = await userService.createFacultyIntoDB(password, facultyData);
+    res.status(200).json({
+        success: true,
+        message: 'Faculty is created succesfully',
+        data: result
+    })
+
+});
+
+const createAdmin = catchAsyncError(async (req, res) => {
+    const { password, admin: adminData } = req.body;
+
+    const result = await userService.createAdminIntoDB(password, adminData);
+
+    res.status(200).json({
+        success: true,
+        message: "Admin is created succesfully",
+        data: result
+    })
+
+
+});
 
 
 export const userController = {
-    createStudent
+    createStudent, createAdmin, createFaculty
 }
