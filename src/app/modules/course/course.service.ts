@@ -19,12 +19,13 @@ const getAllCoursesFromDb = async (query: Record<string, unknown>) => {
         .paginate()
         .fields();
 
-    const result = await courseQuery.modelQuery
+    const result = await courseQuery.QueryModel
     // const result = await courseModel.find()
 
     return result
 }
 const getSingleCourseFromDb = async (id: string) => {
+    console.log(id, 'id ta asche');
     const result = await courseModel.findById(id).populate('preRequisiteCourses.course')
     return result
 }

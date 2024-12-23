@@ -4,6 +4,7 @@ class QueryBuilder<T> {
     public QueryModel: Query<T[], T>;
     public query: Record<string, unknown>;
 
+
     constructor(QueryModel: Query<T[], T>, query: Record<string, unknown>) {
         this.QueryModel = QueryModel;
         this.query = query;

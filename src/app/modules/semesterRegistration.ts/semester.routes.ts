@@ -1,8 +1,9 @@
 
 import express from 'express';
 import validateRequest from '../../utils/validateRequest';
-import { semesterRegistrationValidation } from './semester.validation';
 import { semesterController } from './semester.controller';
+import { semesterRegistrationValidation } from './semester.validation';
+
 
 
 
@@ -12,7 +13,9 @@ router.post('/', validateRequest(semesterRegistrationValidation.createSemesterRe
 
 router.get('/', semesterController.getAllsemesterRegistration)
 router.get('/:id', semesterController.getSinglesemesterRegistration)
+
 router.patch('/:id', semesterController.updatesemesterRegistration)
+
 
 
 

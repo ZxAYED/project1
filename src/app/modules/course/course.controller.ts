@@ -24,6 +24,7 @@ const getAllCourse = catchAsyncError(async (req, res) => {
 })
 
 const getSingleCourse = catchAsyncError(async (req, res) => {
+    console.log('course controller');
     const result = await courseService.getSingleCourseFromDb(req.params.id)
     res.status(200).json({
         success: true,
