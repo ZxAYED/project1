@@ -1,3 +1,5 @@
+import { Model } from "mongoose"
+import { USER_ROLE } from "./user.constant"
 
 
 export interface TUser {
@@ -10,3 +12,10 @@ export interface TUser {
     email?: string
 
 }
+export interface IUserModel extends Model<TUser> {
+    // myStaticMethod(): number
+    isUserExistByCustomId(id: string): Promise<TUser>
+    isPasswordMatched(id: string): Promise<TUser>
+}
+
+export type TUseRole = keyof typeof USER_ROLE

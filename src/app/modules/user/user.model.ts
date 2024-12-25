@@ -11,11 +11,12 @@ const userSchema = new Schema<TUser>({
     password: {
         type: String,
         required: true,
-        default: config.default_pass
+        default: config.default_pass,
+        select: 0
     },
     needPasswordChange: {
         type: Boolean,
-
+        default: true,
     },
     role: {
         type: String,
@@ -57,6 +58,13 @@ userSchema.post('save', async function (doc, next) {
     next()
 })
 
+userSchema.statics.isUserExistByCustomId = async (id: string) => {
 
+    return await userModel.findOne({ id })
+}
+// userSchema.statics.isPasswordMatched = async (id: string) => {
+//     await bcrypt.compare(payload?.password, isUserExists?.password);
+
+// }
 
 export const userModel = model<TUser>('User', userSchema)

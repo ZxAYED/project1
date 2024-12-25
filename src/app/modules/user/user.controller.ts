@@ -42,6 +42,7 @@ const createFaculty = catchAsyncError(async (req, res) => {
 
 });
 
+
 const createAdmin = catchAsyncError(async (req, res) => {
     const { password, admin: adminData } = req.body;
 

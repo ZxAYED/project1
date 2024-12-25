@@ -2,6 +2,7 @@ import express from 'express';
 import validateRequest from '../../utils/validateRequest';
 import { FacultyControllers } from './faculty.controller';
 import { facultyValidations } from './faculty.validation';
+import auth from '../../utils/auth';
 
 const router = express.Router();
 
@@ -17,6 +18,6 @@ router.patch(
 
 router.delete('/:id', FacultyControllers.deleteFaculty);
 
-router.get('/', FacultyControllers.getAllFaculties);
+router.get('/', auth(), FacultyControllers.getAllFaculties);
 
 export const FacultyRoutes = router;

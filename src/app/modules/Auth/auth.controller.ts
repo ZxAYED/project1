@@ -11,6 +11,17 @@ const loginUser = catchAsyncError(async (req, res) => {
     })
 })
 
+const changePassword = catchAsyncError(async (req, res) => {
+
+    const result = await authService.changePasswordIntoDB(req.user, req.body);
+
+    res.status(200).json({
+        success: true,
+        message: 'Password has been changed succesfully',
+        data: result
+    })
+
+});
 export const authController = {
-    loginUser
+    loginUser, changePassword
 }

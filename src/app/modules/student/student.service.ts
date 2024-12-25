@@ -78,20 +78,20 @@ const getAllStudentsFromDb = async (query: Record<string, unknown>) => {
     // return result
 
 
-    const studentQuery = new QueryBuilder(StudentModel.find(), query).search(studentSearchableField).filter().sort().paginate().fields()
-
-    const result = await studentQuery.modelQuery.populate('academicSemester').populate({
+    const studentQuery = new QueryBuilder(StudentModel.find().populate('academicSemester').populate('user').populate({
         path: 'academicDepartment',
         populate: {
             path: 'academicFaculty'
         }
     })
+        , query).search(studentSearchableField).filter().sort().paginate().fields()
 
+    const result = await studentQuery.QueryModel
     return result
 
 }
-const getSingleStudentsFromDb = async (id: string) => {
-    const result = await StudentModel.findById(id).populate('academicSemester').populate({
+const getSingleStudentsFromDb = async (studentId: string) => {
+    const result = await StudentModel.findById(studentId).populate('academicSemester').populate({
         path: 'academicDepartment',
         populate: {
             path: 'academicFaculty'

@@ -51,9 +51,9 @@ class QueryBuilder<T> {
         return this;
     }
 
-    exec() {
-        return this.QueryModel.exec();
-    }
+
+
+
 }
 
 export default QueryBuilder;
