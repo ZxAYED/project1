@@ -1,7 +1,7 @@
 import app from "./app"
 import config from "./app/config";
 import { Server } from 'http'
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
 
 let server: Server
 

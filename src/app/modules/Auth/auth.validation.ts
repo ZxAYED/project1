@@ -13,9 +13,20 @@ const changePasswordValidation = z.object({
         newPassword: z.string({ required_error: 'Password is required' })
     })
 })
-
+const forgotPasswordValidation = z.object({
+    body: z.object({
+        id: z.string({ required_error: 'User Id is required' })
+    })
+})
+const refreshTokenValidation = z.object({
+    cookies: z.object({
+        refreshToken: z.string({ required_error: 'Refresh Token  is required' })
+    })
+})
 
 
 export const authValidation = {
-    loginValidation, changePasswordValidation
+    loginValidation, changePasswordValidation,
+    forgotPasswordValidation,
+    refreshTokenValidation
 }

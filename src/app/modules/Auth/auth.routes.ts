@@ -13,4 +13,8 @@ router.post('/login', validateRequest(authValidation.loginValidation), authContr
 
 router.post('/change-password', auth(USER_ROLE.admin, USER_ROLE.faculty, USER_ROLE.student), validateRequest(authValidation.changePasswordValidation), authController.changePassword)
 
+router.post('/refresh-token', validateRequest(authValidation.refreshTokenValidation), authController.refreshToken)
+
+router.post('/forget-password', validateRequest(authValidation.forgotPasswordValidation), authController.forgotPassword)
+
 export const authRoutes = router

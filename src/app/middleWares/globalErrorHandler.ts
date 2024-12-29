@@ -1,4 +1,4 @@
-import { NextFunction, Request, Response } from "express"
+import express, { NextFunction, Request, Response } from "express"
 import { ZodError } from "zod"
 import config from "../config"
 
@@ -57,30 +57,14 @@ const GlobalErrorHandler = (err: any, req: Request, res: Response, next: NextFun
     else if (err instanceof AppError) {
 
         statusCode = err.statusCode
-        message = err.message,
-            ErrorSource = [{
-                path: 'No path found',
-                message: err?.message
-            }]
-    }
-    else if (err instanceof AppError) {
-
-        statusCode = err.statusCode
-        message = err.message,
-            ErrorSource = [{
-                path: 'No path found',
-                message: err?.message
-            }]
-    }
-    else if (err instanceof Error) {
-
-        statusCode
-        message
+        message = err.message
         ErrorSource = [{
             path: 'No path found',
-            message: message
+            message: err?.message
         }]
     }
+
+
 
 
     return res.status(statusCode).json({
@@ -91,4 +75,4 @@ const GlobalErrorHandler = (err: any, req: Request, res: Response, next: NextFun
     })
 
 }
-export default GlobalErrorHandler
+export default GlobalErrorHandler as unknown as express.ErrorRequestHandler

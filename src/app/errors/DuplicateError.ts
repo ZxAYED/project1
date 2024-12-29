@@ -7,7 +7,7 @@ const handleDuplicateError = (err: any): IErrorResponse => {
     const errorSource: IErrorSource[] =
         [{
             path: "No path found",
-            message: `${msg} is already exits`
+            message: `${msg} is already exists`
 
         }
         ]

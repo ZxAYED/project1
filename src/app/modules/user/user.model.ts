@@ -32,6 +32,10 @@ const userSchema = new Schema<TUser>({
         type: Boolean,
         default: false
     },
+    passwordChangedAt: {
+        type: Date,
+
+    },
 }, {
     timestamps: true
 })
@@ -53,10 +57,10 @@ userSchema.pre('save', function (next) {
 });
 
 
-userSchema.post('save', async function (doc, next) {
-    doc.password = ''
-    next()
-})
+// userSchema.post('save', async function (doc, next) {
+//     doc.password = ''
+//     next()
+// })
 
 userSchema.statics.isUserExistByCustomId = async (id: string) => {
 
